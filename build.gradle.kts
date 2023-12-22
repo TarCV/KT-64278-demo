@@ -104,9 +104,11 @@ fun NamedDomainObjectContainer<out KotlinJsCompilation>.createExecutable(name: S
                     )
 
                     dependsOn(binary.linkSyncTask)
-                    inputFilesDirectory.fileProvider(project.provider {
-                        binary.linkSyncTask.get().destinationDirectory.get()
-                    })
+                    inputFilesDirectory.fileProvider(
+                        binary.linkSyncTask.flatMap {
+                            it.destinationDirectory
+                        }
+                    )
 
                     mode = KotlinWebpackConfig.Mode.PRODUCTION
                     sourceMaps = false
