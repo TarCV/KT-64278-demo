@@ -38,6 +38,7 @@ kotlin {
             }
         }
         useCommonJs()
+        binaries.executable()
         compilations.createExecutable("comparable")
         compilations.createExecutable("optimal")
     }
@@ -60,6 +61,7 @@ rootProject.plugins.withType<NodeJsRootPlugin> {
 tasks.named<Copy>("jvmTestProcessResources") {
     from(tasks.named<KotlinWebpack>("executeProductionWebpackComparable").map { it.outputDirectory })
     from(tasks.named<KotlinWebpack>("executeProductionWebpackOptimal").map { it.outputDirectory })
+    from(tasks.named<KotlinWebpack>("jsBrowserProductionWebpack").map { it.outputDirectory })
 }
 
 fun NamedDomainObjectContainer<out KotlinJsCompilation>.createExecutable(name: String) {

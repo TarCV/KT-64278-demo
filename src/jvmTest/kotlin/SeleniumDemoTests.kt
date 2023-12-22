@@ -29,23 +29,23 @@ class SeleniumDemoTests {
 
     @Test
     fun readColumnTexts(): Unit = ChromeDriver(ChromeOptions().addArguments("--headless=new")).runAndQuit {
-        (1..2).map {
+        (1..5).map {
             listOf(
-                assertAndMeasure("KtJs comparable") { cells ->
+                assertAndMeasure("KtJs optimal") { _ ->
+                    executeKtJs("optimal.js")
+                },
+
+                assertAndMeasure("KtJs comparable (as jsComparable)") { cells ->
                     executeKtJs(cells, "comparable.js")
                 },
 
-                assertAndMeasure("KtJs optimal") { _ ->
-                    executeKtJs("optimal.js")
+                assertAndMeasure("KtJs comparable (as jsMain)") { cells ->
+                    executeKtJs(cells, "KT-64278-demo.js")
                 },
 
                 assertAndMeasure("Selenium comparable") { cells ->
                     cells.map { it.getDomProperty("textContent") }
                 },
-
-                assertAndMeasure("Selenium getText") { cells ->
-                    cells.map { it.text }
-                }
             )
         }
             .flatten()
